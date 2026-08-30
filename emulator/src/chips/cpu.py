@@ -22,4 +22,9 @@ class CPU:
         # Internal "scratch" registers
         self.mar = UInt16(0) # Memory Address Register
         self.mdr = UInt8(0) # Memory Data Register
-    
+
+    def StoreAinMDR(self): # Stores the A register in the temporary internal data register
+        self.mar = self.a
+
+    def LoadAfromMDR(self): # Loads the A register from the temporary internal data register
+        self.a = self.mar
