@@ -7,6 +7,6 @@ if TYPE_CHECKING: # Check if type checking
 class Registers:
     '''Functions that manipulate registers'''
     @staticmethod
-    def incrementPC(cpu:CPU) -> None:
+    def increment_pc(cpu:CPU) -> None:
         '''Increments the PC by one'''
         cpu.pc += 1
