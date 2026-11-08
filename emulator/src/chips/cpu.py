@@ -1,6 +1,4 @@
-'''CPU chip definition'''
 # Import pin library
-from library.pin import * # Import pin objects to allow accessing pins
 from library.datatypes import * # Import all datatypes to prevent illegal overflowing
 # Import instruction set
 
@@ -11,12 +9,6 @@ class CPU:
     and driving the core fetch-decode-execute cycle.
     '''
     def __init__(self):
-        # Pin definitions
-        self.addressBus = PinBus(16)
-        self.dataBus = PinBus(8)
-        self.clockPin = Pin()
-        self.rWPin = Pin()
-
         # Register's for keeping track of data.
         self.a = UInt8(0)   # General purpose register A
         self.x = UInt8(0)   # General purpose register X
