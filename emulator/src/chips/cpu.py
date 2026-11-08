@@ -5,7 +5,11 @@ from library.datatypes import * # Import all datatypes to prevent illegal overfl
 # Import instruction set
 
 class CPU:
-    '''CPU is the Central Processing Unit. It does all the data processing and running programs'''
+    '''
+    CPU class. Responsible for executing program instructions,
+    managing internal data movement across registers and buses, 
+    and driving the core fetch-decode-execute cycle.
+    '''
     def __init__(self):
         # Pin definitions
         self.addressBus = PinBus(16)
