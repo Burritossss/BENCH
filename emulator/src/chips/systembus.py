@@ -19,28 +19,31 @@ class SystemBus:
         # Append the format for the system bus regions
         self.regions.append((start_value, end_value, device))
 
-    def read_address(self, address:int) -> int:
+    def read_address(self, address:int|UInt16) -> int:
         '''
         Reads an address linked in the system bus.
 
         If an address isn't linked, a warning will be printed and will return 0
         '''
+        # Check if the address is a UInt or normal int.
+        # If it is a UInt, pull the value of the UInt, otherwise pull the integer
+        address_value = address.value if isinstance(address, UInt16) else address
         # Loop through each device linked in the system bus
         for start, end, device in self.regions:
-            if start <= address <= end: # Check if the requested address is in range
-                return device.read(address - start) # Return the devices read function
+            if start <= address_value <= end: # Check if the requested address is in range
+                return device.read(address_value - start) # Return the devices read function
         # If there's nothing at the address, print a warning and return 0
         print(f"Bus Warning: Unmapped read at 0x{address:04X}")
         return 0
 
     def write_address(self, address:int|UInt16, value:int|UInt8) -> None:
         '''Write's to an address linked to the system bus '''
-        # Loop through each device linked in the system bus
         # Check if arguments is a UInt or int.
         # If it is a UInt, pull the value of the UInt, otherwise pull integer
         address_value = address.value if isinstance(address, UInt16) else address
         value_value = value.value if isinstance(value, UInt8) else value # greatest variable name... value_value
 
+        # Loop through each device linked in the system bus
         for start, end, device in self.regions:
             if start <= address_value <= end: # Check if the requested address is in range
                 device.write(address_value - start, value_value) # Write to the device at the address requested
