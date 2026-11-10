@@ -44,7 +44,7 @@ class SRAM:
             # If UInt, pull the value of the UInt. If bytearray, write the bytes normally,
             # if normal int, write the bytes normally.
             byte_value = byte.value if isinstance(byte, UInt8) else byte
-            self.write(0x2000+i, byte_value) # Write the byte
+            self.write((0x2000+i) & 0xFFFF, byte_value) # Write the byte
 
         # Write the start address
         self.write(0xFFFF, start_address[0])
