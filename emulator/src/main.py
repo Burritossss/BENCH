@@ -21,3 +21,8 @@ def main():
 
     bus.map_device(0, 0xFFFF, memory) # Map memory to the bus
     cpu = CPU(bus) # Create the CPU object
+    # Loop
+    while True:
+        cpu.fetch_decode_execute() # Tick the cpu once
+        print(f"A: {cpu.a}; X: {cpu.x}; Y: {cpu.y}")
+        input() # Hold the program hostage until the user presses enter
