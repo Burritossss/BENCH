@@ -10,3 +10,20 @@ class Registers:
     def increment_pc(cpu:CPU) -> None:
         '''Increments the PC by one'''
         cpu.pc += 1
+
+class Memory:
+    '''Functions that manage memory'''
+    @staticmethod
+    def pull_address(cpu:CPU) -> UInt16:
+        '''
+        Returns an address from the next two values in memory
+        
+        Increments pc by two
+        '''
+        lower = cpu.bus.read_address(cpu.pc)
+        Registers.increment_pc(cpu)
+        upper = cpu.bus.read_address(cpu.pc)
+        Registers.increment_pc(cpu)
+
+        address = lower | (upper << 8)
+        return UInt16(address)

@@ -11,8 +11,9 @@ class UInt8:
         return self._value
     
     @value.setter
-    def value(self, value:int) -> None:
-        self._value = value & 0xFF
+    def value(self, value:int|UInt8) -> None:
+        value_value = value.value if isinstance(value, UInt8) else value
+        self._value = value_value & 0xFF
 
     def __add__(self, other:int|UInt8) -> UInt8:
         # Grab the value of other depending on what type it is
@@ -38,8 +39,9 @@ class UInt16:
         return self._value
     
     @value.setter
-    def value(self, value:int) -> None:
-        self._value = value & 0xFFFF
+    def value(self, value:int | UInt16) -> None:
+        value_value = value.value if isinstance(value, UInt16) else value
+        self._value = value_value & 0xFFFF
 
     def __add__(self, other:int|UInt8|UInt16) -> UInt16:
         # Grab the value of other depending on what type it is

@@ -16,26 +16,31 @@ class CPU:
         self.bus = bus # Keep track of the system bus object
 
         # Register's for keeping track of data.
-        self.a = UInt8(0)   # General purpose register A
-        self.x = UInt8(0)   # General purpose register X
-        self.y = UInt8(0)   # General purpose register Y
-        self.ir = UInt8(0)  # Instruction register
-        self.pc = UInt16(0) # Program Counter Register
+        self.a: UInt8 = UInt8(0)   # General purpose register A
+        self.x: UInt8 = UInt8(0)   # General purpose register X
+        self.y: UInt8 = UInt8(0)   # General purpose register Y
+        self.ir: UInt8 = UInt8(0)  # Instruction register
+        self.pc: UInt16 = UInt16(0) # Program Counter Register
 
-        # Internal "scratch" registers
-        self.mar = UInt16(0) # Memory Address Register
-        self.mdr = UInt8(0) # Memory Data Register
+        # == Reset the program counter == 
+        # Read the lower and upper address from the place in memory the PC start address should be
+        lower = bus.read_address(0xFFFE)
+        upper = bus.read_address(0xFFFF)
+        address = lower | (upper << 8)
+
+        # Set the PC to the start address
+        self.pc = UInt16(address)
 
     def fetch_decode_execute(self):
         '''Fetch-Decode-Execute loop of the CPU'''
-        self.ir = self.bus.read_address(self.pc) # Read the byte at the address the PC is reading at
+        self.ir = UInt8(self.bus.read_address(self.pc)) # Read the byte at the address the PC is reading at
         self.pc += 1
         # Get the instruction's function from the instruction table
-        instruction = INSTRUCTION_TABLE.get(self.ir)   
+        instruction = INSTRUCTION_TABLE.get(self.ir.value)
         # and check if the instruction actually exists
         if instruction:
             instruction(self) # Run the instruction and pass the CPU
         else:
             # Crash!!
-            raise NotImplementedError(f"Instruction not implemented {self.ir:02X}")
+            raise NotImplementedError(f"Instruction not implemented {self.ir.value:02X}")
         
