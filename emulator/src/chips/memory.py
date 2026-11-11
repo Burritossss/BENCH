@@ -1,4 +1,4 @@
-from library.datatypes import * # Import all the custom datatypes
+from .library.datatypes import * # Import all the custom datatypes
 
 class SRAM:
     '''
@@ -9,7 +9,7 @@ class SRAM:
         # Create the memory by storing the size 
         # and then creating a list of all the bytes for the chip
         self.size = size
-        self.data = [UInt8(0) for _ in range(size)]
+        self.data = [UInt8(0) for _ in range(size+1)]
 
     def read(self, address:int|UInt16):
         '''Returns a specific byte from memory'''

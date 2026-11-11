@@ -26,3 +26,6 @@ def main():
         cpu.fetch_decode_execute() # Tick the cpu once
         print(f"A: {cpu.a}; X: {cpu.x}; Y: {cpu.y}")
         input() # Hold the program hostage until the user presses enter
+
+if __name__ == "__main__":
+    main() # Run the main program

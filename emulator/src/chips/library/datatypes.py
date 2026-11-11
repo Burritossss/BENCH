@@ -1,7 +1,7 @@
 '''More data types for making chips easier'''
 from __future__ import annotations
 
-class UInt8:
+class UInt8(int):
     '''An unsigned integer limited to numbers between 0 and 255'''
     def __init__(self, value:int):
         self._value = value & 0xFF
@@ -28,6 +28,17 @@ class UInt8:
         value = other.value if isinstance(other, UInt8) else other
         self._value = (self.value + value) & 0xFF # Add the value of other to the value and keep it within 0xFF
         return self
+
+    def __lshift__(self, other:int|UInt8) -> UInt8:
+        # Grab the value of other depending on what it is
+        value = other.value if isinstance(other, UInt8) else other
+        return UInt8(self._value << value)
+
+    def __or__(self, other:int|UInt8) -> UInt8:
+        # Grab the value of the other depending on what it is... yk the stuff...
+        value = other.value if isinstance(other, UInt8) else other
+        return UInt8(self._value | value)
+
 
 class UInt16:
     '''An unsigned integer limited to numbers between 0 and 65535'''

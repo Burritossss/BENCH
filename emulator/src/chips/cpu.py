@@ -1,5 +1,6 @@
-from library.datatypes import * # Import all datatypes to prevent illegal overflowing
-from instructions import INSTRUCTION_TABLE # Import instruction set
+from __future__ import annotations
+from .library.datatypes import * # Import all datatypes to prevent illegal overflowing
+from .instructions import INSTRUCTION_TABLE # Import instruction set
 from typing import TYPE_CHECKING
 
 # Import system bus type checking

@@ -1,8 +1,10 @@
 '''A collection of functions for making it easier to write new instructions'''
+from __future__ import annotations
 from typing import TYPE_CHECKING # Import type checking to pull only types from CPU
-from datatypes import * # Import data types to force 8 bit and 16 bit limitations
+from .datatypes import * # Import data types to force 8 bit and 16 bit limitations
 if TYPE_CHECKING: # Check if type checking
-    from cpu import CPU
+    from chips.cpu import CPU
+    
 
 class Registers:
     '''Functions that manipulate registers'''

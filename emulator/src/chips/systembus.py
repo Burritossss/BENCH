@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import Any # Import any type
-from library.datatypes import * # Import datatypes
+from .library.datatypes import * # Import datatypes
 
 class SystemBus:
     '''Routes read/write requests to hardware devices based on address'''

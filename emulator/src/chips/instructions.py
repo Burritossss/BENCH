@@ -1,8 +1,9 @@
 '''File storing all the functions for each instruction for the CPU'''
+from __future__ import annotations
 from typing import TYPE_CHECKING # Import type checking to get types and functions
 from types import FunctionType # Import function type for better type checking
-from library.helperfuncs import * # Import helperfuncs for easier writing of instructions
-from library.datatypes import * # Import dataclasses
+from .library.helperfuncs import * # Import helperfuncs for easier writing of instructions
+from .library.datatypes import * # Import dataclasses
 
 if TYPE_CHECKING: # Check if importing types to prevent looped importing errors
     from cpu import CPU # Import types for the CPU for access to its types
