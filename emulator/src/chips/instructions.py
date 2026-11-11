@@ -19,6 +19,11 @@ def ldaa(cpu:CPU): # Load A absolute (Loads A register with a value in an addres
     address = Memory.pull_address(cpu)
     cpu.a = UInt8(cpu.bus.read_address(address))
 
+def staa(cpu:CPU): # Store A absolute (Stores A register at an address defined by two bytes in memory)
+    address = Memory.pull_address(cpu)
+    cpu.bus.write_address(address, cpu.a) # Write the A register to the address
+
+
 '''
 A dictionary of each instructions function and it's operand
 
@@ -26,5 +31,5 @@ The format is <opcode>:<function without parenthesis>
 '''
 INSTRUCTION_TABLE:dict[int,FunctionType] = {
     0x00:nop, 
-    0x01:ldai, 0x02:ldaa,    
+    0x01:ldai, 0x02:ldaa, 0x03:staa, 
 }
