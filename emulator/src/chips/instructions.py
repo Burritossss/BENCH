@@ -9,7 +9,7 @@ if TYPE_CHECKING: # Check if importing types to prevent looped importing errors
     from cpu import CPU # Import types for the CPU for access to its types
 
 def nop(cpu:CPU): # No Operation. Just passes
-    Registers.increment_pc(cpu) # Increment the PC
+    pass
 
 def ldai(cpu:CPU): # Load A immediate (Loads A register with the next value in memory)
     cpu.a = UInt8(cpu.bus.read_address(cpu.pc)) # Sets the A register immediately

@@ -25,8 +25,8 @@ class CPU:
 
         # == Reset the program counter == 
         # Read the lower and upper address from the place in memory the PC start address should be
-        lower = bus.read_address(0xFFFE)
-        upper = bus.read_address(0xFFFF)
+        lower = int(bus.read_address(0xFFFE))
+        upper = int(bus.read_address(0xFFFF))
         address = lower | (upper << 8)
 
         # Set the PC to the start address

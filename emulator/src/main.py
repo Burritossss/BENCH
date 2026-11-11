@@ -16,7 +16,9 @@ def main():
     memory = SRAM(0xFFFF)
 
     # Define a program and write the program to ROM space in memory
-    program:list[int] = []
+    program:list[int] = [
+        0x01, 0x20
+    ]
     memory.write_program(program, (0x00, 0x20)) # Write the program and set the start address to 0x2000
 
     bus.map_device(0, 0xFFFF, memory) # Map memory to the bus
@@ -24,7 +26,7 @@ def main():
     # Loop
     while True:
         cpu.fetch_decode_execute() # Tick the cpu once
-        print(f"A: {cpu.a}; X: {cpu.x}; Y: {cpu.y}")
+        print(f"A: 0x{cpu.a.value:02x}; X: 0x{cpu.x.value:02x}; Y: 0x{cpu.y.value:02x}; PC: 0x{cpu.pc.value:02x}")
         input() # Hold the program hostage until the user presses enter
 
 if __name__ == "__main__":

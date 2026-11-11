@@ -30,12 +30,12 @@ class SRAM:
         # Do what we did with the address just instead of UInt16, its a 
         # UInt8
         value_value = value.value if isinstance(value, UInt8) else value # another great variable name......
-        # Set the value of the address to the arguments value
-        self.data[address_value & self.size].value = value_value
+        # Set the value of the address to the new value
+        self.data[address_value & self.size] = UInt8(value_value)
 
     def write_program(self, 
                       bytes:list[int]|list[UInt8], 
-                      start_address: tuple[UInt8, UInt8] | tuple[int, int]=(0xFE, 0xFF)
+                      start_address: tuple[UInt8, UInt8] | tuple[int, int]=(0x00, 0x20)
                       ):
         '''Write's the program to the designated spot in memory for ROM'''
         # Enumerate through each byte in the list
@@ -47,5 +47,5 @@ class SRAM:
             self.write((0x2000+i) & 0xFFFF, byte_value) # Write the byte
 
         # Write the start address
-        self.write(0xFFFF, start_address[0])
-        self.write(0xFFFE, start_address[1])
+        self.write(0xFFFE, start_address[0])
+        self.write(0xFFFF, start_address[1])
