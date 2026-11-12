@@ -33,7 +33,7 @@ class SystemBus:
             if start <= address_value <= end: # Check if the requested address is in range
                 return device.read(address_value - start) # Return the devices read function
         # If there's nothing at the address, print a warning and return 0
-        print(f"Bus Warning: Unmapped read at 0x{address:04X}")
+        print(f"Bus Warning: Unmapped read at 0x{address_value:04X}")
         return 0
 
     def write_address(self, address:int|UInt16, value:int|UInt8) -> None:
@@ -49,5 +49,5 @@ class SystemBus:
                 device.write(address_value - start, value_value) # Write to the device at the address requested
                 return
         # If there's nothing at the address, print a warning
-        print(f"Bus Warning: Unmapped write at 0x{address:04X}")
+        print(f"Bus Warning: Unmapped write at 0x{address_value:04X}")
         return
