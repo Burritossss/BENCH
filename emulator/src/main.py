@@ -7,8 +7,25 @@ A high level, easy to modify and play with, moddable custom 8-bit emulator.
 from chips.cpu import CPU # Import CPU class
 from chips.memory import SRAM # Import SRAM class
 from chips.systembus import SystemBus # Import System Bus class
+import sys # Import system module
+# Prevent curses import issues
+try:
+    import curses
+    from curses import wrapper
+except ModuleNotFoundError:
+    print('Curses is not found!')
+    print('Please ensure Curses is installed.')
+    print('Possible fix:')
+    if sys.version.startswith("win"): # Check if the OS is window
+        print('\tRun: pip install windows-curses')
+    else:
+        print('\tEnsure curses supports your system and is installed in your python environment')
+    sys.exit(1)
 
-def main():
+def main(stdscr:curses.window):
+    pass
+
+def debugmode():
     # Initialize the system bus
     bus = SystemBus()
 
@@ -30,4 +47,4 @@ def main():
         input() # Hold the program hostage until the user presses enter
 
 if __name__ == "__main__":
-    main() # Run the main program
+    debugmode() # Run the main program
