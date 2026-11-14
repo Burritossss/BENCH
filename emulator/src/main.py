@@ -23,9 +23,21 @@ except ModuleNotFoundError:
     sys.exit(1)
 
 def main(stdscr:curses.window):
-    pass
+    stdscr.clear()
+    # Emulator initialization
+    try:
+        bus = SystemBus() # Initialize the BUS
+        memory = SRAM(0xFFFF) # Initialize the Memory
+        bus.map_device(0, 0xFFFF, memory) # Map the memory onto the bus
+        cpu = CPU(bus) # Initialize the CPU
+    except Exception as e:
+        stdscr.addstr(1,1,f'There was an error loading. {e}')
+        stdscr.addstr(6,1,"Press any key to continue")
+        stdscr.refresh()
+        stdscr.getch()
+        sys.exit(1)
 
-def debugmode():
+def debug():
     # Initialize the system bus
     bus = SystemBus()
 
@@ -47,4 +59,4 @@ def debugmode():
         input() # Hold the program hostage until the user presses enter
 
 if __name__ == "__main__":
-    debugmode() # Run the main program
+    wrapper(main) # Run the main program
