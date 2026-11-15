@@ -52,6 +52,16 @@ def main(stdscr:curses.window):
     emulator_stats.refresh() # Refresh the window
     emulator_stats.getch()
 
+    # Emulator Settings
+    emulator_settings_width = window_width // 6
+    emulator_settings_height = window_height // 2
+    emulator_settings = curses.newwin(emulator_settings_height, emulator_settings_width, window_height - emulator_settings_height, 1)
+
+    emulator_settings.addstr(1, ((emulator_settings.getmaxyx()[1] - len('Settings')) // 2), 'Settings')
+    emulator_settings.border()
+    emulator_settings.refresh()
+    emulator_settings.getch()
+
 
 def debug():
     # Initialize the system bus
