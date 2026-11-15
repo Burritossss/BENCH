@@ -36,6 +36,22 @@ def main(stdscr:curses.window):
         stdscr.refresh()
         stdscr.getch()
         sys.exit(1)
+    
+    # ======== Window setup ========
+    window_size = stdscr.getmaxyx()
+    window_width = window_size[1]
+    window_height = window_size[0]
+    # Emulator Statistics window
+    emulator_stats_width = window_width // 6 # Width of the Emulator Statistics window
+    emulator_stats_height = window_height // 2 - 1 # Height of the Emulator Statistics window
+    emulator_stats = curses.newwin(emulator_stats_height, emulator_stats_width, 1, 1) # Create the window
+
+    emulator_stats.addstr(1, ((emulator_stats.getmaxyx()[1] - len('Status')) // 2), 'Status') # Add the title to the window
+    
+    emulator_stats.border() # Create the border
+    emulator_stats.refresh() # Refresh the window
+    emulator_stats.getch()
+
 
 def debug():
     # Initialize the system bus
