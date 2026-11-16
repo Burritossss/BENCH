@@ -62,6 +62,17 @@ def main(stdscr:curses.window):
     emulator_settings.refresh()
     emulator_settings.getch()
 
+    # Main Window
+    main_window_width = window_width - (window_width // 6) - 1
+    main_window_height = window_height - 4
+    main_window = curses.newwin(main_window_height, main_window_width, 2, (window_width // 6) + 1)
+
+    main_window.addstr(1, ((main_window.getmaxyx()[1] - len('Main Window')) // 2), 'Main Window')
+    main_window.border()
+    main_window.refresh()
+    main_window.getch()
+
+
 
 def debug():
     # Initialize the system bus
