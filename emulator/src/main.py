@@ -4,9 +4,6 @@ The BENCH emulator.
 A high level, easy to modify and play with, moddable custom 8-bit emulator.
 '''
 
-from chips.cpu import CPU # Import CPU class
-from chips.memory import SRAM # Import SRAM class
-from chips.systembus import SystemBus # Import System Bus class
 import sys # Import system module
 # Prevent curses import issues
 try:
@@ -21,6 +18,11 @@ except ModuleNotFoundError:
     else:
         print('\tEnsure curses supports your system and is installed in your python environment')
     sys.exit(1)
+# Import custom libraries
+from chips.cpu import CPU # Import CPU class
+from chips.memory import SRAM # Import SRAM class
+from chips.systembus import SystemBus # Import System Bus class
+from emulator.windows import Window
 
 def main(stdscr:curses.window):
     stdscr.clear() # Clear the terminal
@@ -67,33 +69,24 @@ def main(stdscr:curses.window):
     # Emulator Statistics window
     emulator_stats_width = window_width // 6 # Width of the Emulator Statistics window
     emulator_stats_height = window_height // 2 - 1 # Height of the Emulator Statistics window
-    emulator_stats = curses.newwin(emulator_stats_height, emulator_stats_width, 1, 1) # Create the window
+    emulator_stats = Window(1, 1, emulator_stats_width, emulator_stats_height, 'Statistics') # Create the window
 
-    emulator_stats.addstr(1, ((emulator_stats.getmaxyx()[1] - len('Status')) // 2), 'Status') # Add the title to the window
-    
-    emulator_stats.border() # Create the border
     emulator_stats.refresh() # Refresh the window
-    emulator_stats.getch()
 
     # Emulator Settings
     emulator_settings_width = window_width // 6
     emulator_settings_height = window_height // 2
-    emulator_settings = curses.newwin(emulator_settings_height, emulator_settings_width, window_height - emulator_settings_height, 1)
+    emulator_settings = Window(1, window_height - emulator_settings_height, emulator_settings_width, emulator_settings_height, 'Settings')
 
-    emulator_settings.addstr(1, ((emulator_settings.getmaxyx()[1] - len('Settings')) // 2), 'Settings')
-    emulator_settings.border()
     emulator_settings.refresh()
-    emulator_settings.getch()
 
     # Main Window
     main_window_width = window_width - (window_width // 6) - 1
     main_window_height = window_height - 4
-    main_window = curses.newwin(main_window_height, main_window_width, 2, (window_width // 6) + 1)
+    main_window = Window((window_width // 6) + 1, 2, main_window_width, main_window_height, 'Main Window')
 
-    main_window.addstr(1, ((main_window.getmaxyx()[1] - len('Main Window')) // 2), 'Main Window')
-    main_window.border()
     main_window.refresh()
-    main_window.getch()
+    stdscr.getch()
 
 
 

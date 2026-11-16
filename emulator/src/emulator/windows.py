@@ -2,7 +2,7 @@
 import curses
 
 class Window:
-    '''A window object. It can have a title, position, size, etc.'''
+    '''A window object with a title, position, and size'''
     def __init__(self, 
                  x:int, 
                  y:int, 
@@ -15,4 +15,5 @@ class Window:
         self.window.addstr(1, ((self.window.getmaxyx()[1] - len(self.name)) // 2), self.name)
 
     def refresh(self):
+        '''Refresh the window'''
         self.window.refresh()
