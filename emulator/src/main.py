@@ -23,24 +23,47 @@ except ModuleNotFoundError:
     sys.exit(1)
 
 def main(stdscr:curses.window):
-    stdscr.clear()
+    stdscr.clear() # Clear the terminal
+    stdscr.scrollok(True) # Allow automatic scrolling
+    stdscr.immedok(True) # Turn on immediate refresh
+    
+    # Pull the size of the window, store it for later window setup
+    # and use it now to prevent small terminals from running it
+    window_size = stdscr.getmaxyx()
+    window_width = window_size[1]
+    window_height = window_size[0]
+
+    if window_width < 140 or window_height < 30:
+        stdscr.addstr(f'Your terminal is too small!!\nPlease resize your terminal window.\nPress any key to exit.')
+        stdscr.getch()
+        return
+
     # Emulator initialization
     try:
         bus = SystemBus() # Initialize the BUS
+        stdscr.addstr('Initialized Bus\n')
+        
         memory = SRAM(0xFFFF) # Initialize the Memory
+        stdscr.addstr('Initialized Memory\n')
+        
         bus.map_device(0, 0xFFFF, memory) # Map the memory onto the bus
+        stdscr.addstr('Memory has been mapped\n')
+        
         cpu = CPU(bus) # Initialize the CPU
+        stdscr.addstr('Initialized CPU')
     except Exception as e:
+        stdscr.clear()
+        stdscr.immedok(False)
         stdscr.addstr(1,1,f'There was an error loading. {e}')
         stdscr.addstr(6,1,"Press any key to continue")
         stdscr.refresh()
         stdscr.getch()
         sys.exit(1)
+    stdscr.clear()
+    stdscr.immedok(False) # Turn off immediate refresh
+    stdscr.scrollok(False) # Stop automatic scrolling
     
     # ======== Window setup ========
-    window_size = stdscr.getmaxyx()
-    window_width = window_size[1]
-    window_height = window_size[0]
     # Emulator Statistics window
     emulator_stats_width = window_width // 6 # Width of the Emulator Statistics window
     emulator_stats_height = window_height // 2 - 1 # Height of the Emulator Statistics window
