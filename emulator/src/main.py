@@ -71,21 +71,16 @@ def main(stdscr:curses.window):
     emulator_stats_height = window_height // 2 - 1 # Height of the Emulator Statistics window
     emulator_stats = Window(1, 1, emulator_stats_width, emulator_stats_height, 'Statistics') # Create the window
 
-    emulator_stats.refresh() # Refresh the window
-
     # Emulator Settings
     emulator_settings_width = window_width // 6
     emulator_settings_height = window_height // 2
     emulator_settings = Window(1, window_height - emulator_settings_height, emulator_settings_width, emulator_settings_height, 'Settings')
 
-    emulator_settings.refresh()
-
     # Main Window
     main_window_width = window_width - (window_width // 6) - 1
     main_window_height = window_height - 4
     main_window = Window((window_width // 6) + 1, 2, main_window_width, main_window_height, 'Main Window')
-
-    main_window.refresh()
+    
     stdscr.getch()
 
 
