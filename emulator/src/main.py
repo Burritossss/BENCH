@@ -33,7 +33,7 @@ def main(stdscr:curses.window):
     window_width = window_size[1]
     window_height = window_size[0]
 
-    if window_width < 140 or window_height < 30:
+    if window_width < 130 or window_height < 30:
         stdscr.addstr(f'Your terminal is too small!!\nPlease resize your terminal window.\nPress any key to exit.')
         stdscr.getch()
         return
