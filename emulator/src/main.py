@@ -17,12 +17,13 @@ except ModuleNotFoundError:
         print('\tRun: pip install windows-curses')
     else:
         print('\tEnsure curses supports your system and is installed in your python environment')
+    input()
     sys.exit(1)
 # Import custom libraries
 from chips.cpu import CPU # Import CPU class
 from chips.memory import SRAM # Import SRAM class
 from chips.systembus import SystemBus # Import System Bus class
-from emulator.windows import Window
+from emulator.ui import Window
 
 def main(stdscr:curses.window):
     stdscr.clear() # Clear the terminal

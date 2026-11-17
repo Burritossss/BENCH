@@ -1,6 +1,7 @@
-'''Abstraction layer for making windows in BENCH easier'''
+'''Abstraction layer for writign UI's in BENCH easier'''
 import curses
 from typing import Any
+from types import FunctionType
 from emulator.exceptions import *
 
 class Window:
@@ -14,6 +15,7 @@ class Window:
         self.name = name # Name for the window
         # Dynamics are dynamic items that are easy to update
         self.dynamics:dict[int,tuple[Any, int, int]] = {} # Format: <id>:(<value>, <x>, <y>)
+        self.buttons:dict[int,tuple[str, int, int, FunctionType]] = {} # Format: <id>:(<button_string>, <x>, <y>, <function>)
         self.window = curses.newwin(height, width, y, x)
         self.window.border()
         self.window.addstr(1, ((self.window.getmaxyx()[1] - len(self.name)) // 2), self.name)
@@ -24,9 +26,9 @@ class Window:
         self.window.refresh()
 
     def add_dynamic(self, x:int, y:int, id:int, value:Any):
-        '''Add's a dynamic value to the window with a starting value and an ID.'''
+        '''Creates a dynamic value object.'''
         if id in self.dynamics:
-            raise AlreadyExistsError(f"ID {id} already exists!")
+            raise AlreadyExistsError(f"Dynamic with ID, {id}, already exists!")
         self.dynamics[id] = (value, x, y)
         self.window.addstr(y, x, str(value))
         self.window.refresh()
@@ -35,9 +37,15 @@ class Window:
         '''Updates a dynamic's value based on it's ID'''
         if id not in self.dynamics:
             raise KeyError(f'ID {id} does not exist!')
-        # Unpack the tuple (because they are immutable......)
-        _, x, y = self.dynamics[id]
-        self.dynamics[id] = (value, x, y)
+        _, x, y = self.dynamics[id] # Unpack the tuple
+        self.dynamics[id] = (value, x, y) # Reassemble the tuple
+        self.window.addstr(y, x, str(value)) # Add the string to the window
+        self.window.refresh()
 
-        self.window.addstr(y, x, str(value))
+    def add_button(self, x:int, y:int, id:int, name:str, function:FunctionType):
+        '''Creates a dynamic button object'''
+        if id in self.buttons:
+            raise AlreadyExistsError(f'Button with ID, {id}, already exists!')
+        self.buttons[id] = (name, x, y, function)
+        self.window.addstr(y, x, name)
         self.window.refresh()
