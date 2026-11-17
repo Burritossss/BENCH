@@ -65,25 +65,32 @@ def main(stdscr:curses.window):
     stdscr.clear()
     stdscr.immedok(False) # Turn off immediate refresh
     stdscr.scrollok(False) # Stop automatic scrolling
-    
+
+    # Emulator variables
+    emulation_running = False # Whether the emulation is running
+    loaded_rom = '' # Name of the currently loaded rom
+
     # ======== Window setup ========
     # Emulator Statistics window
     emulator_stats_width = window_width // 6 # Width of the Emulator Statistics window
     emulator_stats_height = window_height // 2 - 1 # Height of the Emulator Statistics window
     emulator_stats = Window(1, 1, emulator_stats_width, emulator_stats_height, 'Statistics') # Create the window
+    emulator_stats.add_dynamic(2, 3, 0, f'Running: {'Yes' if emulation_running else 'No'}')
 
     # Emulator Settings
     emulator_settings_width = window_width // 6
     emulator_settings_height = window_height // 2
     emulator_settings = Window(1, window_height - emulator_settings_height, emulator_settings_width, emulator_settings_height, 'Settings')
+    emulator_settings.add_button(2, 3, 0, 'Toggle Running', None)
 
     # Main Window
     main_window_width = window_width - (window_width // 6) - 1
     main_window_height = window_height - 4
     main_window = Window((window_width // 6) + 1, 2, main_window_width, main_window_height, 'Main Window')
-    
-    stdscr.getch()
 
+    while True:
+        if emulation_running:
+            cpu.fetch_decode_execute()
 
 
 def debug():
