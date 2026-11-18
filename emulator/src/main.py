@@ -29,6 +29,7 @@ def main(stdscr:curses.window):
     stdscr.clear() # Clear the terminal
     stdscr.scrollok(True) # Allow automatic scrolling
     stdscr.immedok(True) # Turn on immediate refresh
+    curses.curs_set(0)
     
     # Pull the size of the window, store it for later window setup
     # and use it now to prevent small terminals from running it
@@ -43,6 +44,10 @@ def main(stdscr:curses.window):
 
     # Emulator initialization
     try:
+        curses.mousemask(curses.ALL_MOUSE_EVENTS | curses.REPORT_MOUSE_POSITION)
+        curses.mouseinterval(0)
+        stdscr.addstr('Mouse Controls Activated\n')
+
         bus = SystemBus() # Initialize the BUS
         stdscr.addstr('Initialized Bus\n')
         
@@ -65,6 +70,7 @@ def main(stdscr:curses.window):
     stdscr.clear()
     stdscr.immedok(False) # Turn off immediate refresh
     stdscr.scrollok(False) # Stop automatic scrolling
+    stdscr.nodelay(True) # Turn on no delay mode
 
     # Emulator variables
     emulation_running = False # Whether the emulation is running
@@ -91,6 +97,7 @@ def main(stdscr:curses.window):
     while True:
         if emulation_running:
             cpu.fetch_decode_execute()
+        emulator_settings.tick_all_buttons()
 
 
 def debug():
