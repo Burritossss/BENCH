@@ -64,4 +64,7 @@ class Window:
                     if b_state & curses.BUTTON1_PRESSED:
                         self.window.addstr(y, x, text, curses.A_BOLD|curses.A_UNDERLINE)
                         self.window.refresh()
+                        curses.napms(100)
+                        self.window.addstr(y, x, text, curses.A_UNDERLINE)
+                        self.window.refresh()
             
