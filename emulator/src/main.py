@@ -87,17 +87,23 @@ def main(stdscr:curses.window):
     emulator_settings_width = window_width // 6
     emulator_settings_height = window_height // 2
     emulator_settings = Window(1, window_height - emulator_settings_height, emulator_settings_width, emulator_settings_height, 'Settings')
-    emulator_settings.add_button(2, 3, 0, 'Toggle Running', None)
 
     # Main Window
     main_window_width = window_width - (window_width // 6) - 1
     main_window_height = window_height - 4
     main_window = Window((window_width // 6) + 1, 2, main_window_width, main_window_height, 'Main Window')
 
+    # Top toolbar
+    toolbar_window_width = window_width - (window_width // 6) - 1
+    toolbar_window_height = 1
+    toolbar_window = Window((window_width // 6) + 1, 1, toolbar_window_width, toolbar_window_height, '', False)
+
+    toolbar_window.add_button(0, 0, 0, 'Exit', exit)
+
     while True:
-        if emulation_running:
+        if emulation_running and loaded_rom:
             cpu.fetch_decode_execute()
-        emulator_settings.tick_all_buttons()
+        toolbar_window.tick_all_buttons()
 
 
 def debug():

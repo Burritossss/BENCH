@@ -14,19 +14,28 @@ class CPU:
     and driving the core fetch-decode-execute cycle.
     '''
     def __init__(self, bus:SystemBus):
-        self.bus = bus # Keep track of the system bus object
+        self.bus: SystemBus = bus # Keep track of the system bus object
 
         # Register's for keeping track of data.
-        self.a: UInt8 = UInt8(0)   # General purpose register A
-        self.x: UInt8 = UInt8(0)   # General purpose register X
-        self.y: UInt8 = UInt8(0)   # General purpose register Y
-        self.ir: UInt8 = UInt8(0)  # Instruction register
+        self.a: UInt8   # General purpose register A
+        self.x: UInt8   # General purpose register X
+        self.y: UInt8   # General purpose register Y
+        self.ir: UInt8  # Instruction register
+        self.pc: UInt16 # Program Counter Register
+
+    def reset(self):
+        '''Reset the CPU. Resets all value's of the CPU'''
+        # Reset the registers to zero
+        self.a: UInt8 = UInt8(0)    # General purpose register A
+        self.x: UInt8 = UInt8(0)    # General purpose register X
+        self.y: UInt8 = UInt8(0)    # General purpose register Y
+        self.ir: UInt8 = UInt8(0)   # Instruction register
         self.pc: UInt16 = UInt16(0) # Program Counter Register
 
         # == Reset the program counter == 
         # Read the lower and upper address from the place in memory the PC start address should be
-        lower = int(bus.read_address(0xFFFE))
-        upper = int(bus.read_address(0xFFFF))
+        lower = int(self.bus.read_address(0xFFFE))
+        upper = int(self.bus.read_address(0xFFFF))
         address = lower | (upper << 8)
 
         # Set the PC to the start address

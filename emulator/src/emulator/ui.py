@@ -11,7 +11,8 @@ class Window:
                  y:int, 
                  width:int, 
                  height:int,
-                 name:str="Window"):
+                 name:str="Window",
+                 border:bool=True):
         self.name = name # Name for the window
         # Dynamics are dynamic items that are easy to update
         self.dynamics:dict[int,tuple[Any, int, int]] = {} # Format: <id>:(<value>, <x>, <y>)
@@ -19,8 +20,10 @@ class Window:
         self.window = curses.newwin(height, width, y, x)
         self.window.nodelay(True) # No delay mode on
         self.window.keypad(True)
-        self.window.border()
-        self.window.addstr(1, ((self.window.getmaxyx()[1] - len(self.name)) // 2), self.name)
+        if border:
+            self.window.border()
+        if name:
+            self.window.addstr(1, ((self.window.getmaxyx()[1] - len(self.name)) // 2), self.name)
         self.window.refresh() # Refresh the window
 
     def refresh(self):
@@ -64,7 +67,9 @@ class Window:
                     if b_state & curses.BUTTON1_PRESSED:
                         self.window.addstr(y, x, text, curses.A_BOLD|curses.A_UNDERLINE)
                         self.window.refresh()
+                        #`function()
                         curses.napms(100)
                         self.window.addstr(y, x, text, curses.A_UNDERLINE)
                         self.window.refresh()
+
             
