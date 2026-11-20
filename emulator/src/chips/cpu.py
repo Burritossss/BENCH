@@ -22,6 +22,7 @@ class CPU:
         self.y: UInt8   # General purpose register Y
         self.ir: UInt8  # Instruction register
         self.pc: UInt16 # Program Counter Register
+        self.reset() # Reset's the CPU
 
     def reset(self):
         '''Reset the CPU. Resets all value's of the CPU'''

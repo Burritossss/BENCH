@@ -16,7 +16,7 @@ class Window:
         self.name = name # Name for the window
         # Dynamics are dynamic items that are easy to update
         self.dynamics:dict[int,tuple[Any, int, int]] = {} # Format: <id>:(<value>, <x>, <y>)
-        self.buttons:dict[int,tuple[str, int, int, FunctionType]] = {} # Format: <id>:(<text>, <x>, <y>, <function>)
+        self.buttons:dict[int,tuple[str, int, int, FunctionType|None]] = {} # Format: <id>:(<text>, <x>, <y>, <function>)
         self.window = curses.newwin(height, width, y, x)
         self.window.nodelay(True) # No delay mode on
         self.window.keypad(True)
@@ -47,11 +47,11 @@ class Window:
         self.window.addstr(y, x, str(value)) # Add the string to the window
         self.window.refresh()
 
-    def add_button(self, x:int, y:int, id:int, text:str, function:FunctionType):
+    def add_button(self, x:int, y:int, id:int, text:str, function:FunctionType|None):
         '''Creates a dynamic button object'''
         if id in self.buttons:
             raise AlreadyExistsError(f'Button with ID, {id}, already exists!')
-        self.buttons[id] = (text, x, y, function)
+        self.buttons[id] = (text, x, y, function if function else None)
         self.window.addstr(y, x, text, curses.A_UNDERLINE)
         self.window.refresh()
     
@@ -67,7 +67,8 @@ class Window:
                     if b_state & curses.BUTTON1_PRESSED:
                         self.window.addstr(y, x, text, curses.A_BOLD|curses.A_UNDERLINE)
                         self.window.refresh()
-                        #`function()
+                        if function:
+                            function()
                         curses.napms(100)
                         self.window.addstr(y, x, text, curses.A_UNDERLINE)
                         self.window.refresh()
