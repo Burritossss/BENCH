@@ -17,6 +17,7 @@ class Window:
         # Dynamics are dynamic items that are easy to update
         self.dynamics:dict[int,tuple[Any, int, int]] = {} # Format: <id>:(<value>, <x>, <y>)
         self.buttons:dict[int,tuple[str, int, int, FunctionType|None]] = {} # Format: <id>:(<text>, <x>, <y>, <function>)
+        self.toggles:dict[int,tuple[str, int, int, Any, bool]] = {} # Format: <id>:(<text>, <x>, <y>, <function>, <state>)
         # Initialize the window
         self.window = curses.newwin(height, width, y, x)
         self.window.nodelay(True) # No delay mode on
@@ -78,4 +79,7 @@ class Window:
                         self.window.addstr(y, x, text, curses.A_UNDERLINE) # Reset the text
                         self.window.refresh()
 
-            
+    def add_toggle(self):
+        '''Creates a dynamic toggle object'''
+        if id in self.toggles:
+            raise AlreadyExistsError(f'Toggle with ID, {id}, already exists!')

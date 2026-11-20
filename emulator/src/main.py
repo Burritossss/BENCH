@@ -111,8 +111,6 @@ def main(stdscr:curses.window):
         emulator_settings.tick_all_buttons()
         toolbar_window.tick_all_buttons()
 
-
-
 def debug():
     # Initialize the system bus
     bus = SystemBus()
