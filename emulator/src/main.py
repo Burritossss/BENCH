@@ -104,12 +104,15 @@ def main(stdscr:curses.window):
 
     toolbar_window.add_button(1, 0, 0, 'Exit', sys.exit)
 
+    main_window.add_toggle(5, 4, 0, 'Toggle', False)
+
     while True:
         if emulation_running and loaded_rom:
             cpu.fetch_decode_execute()
 
         emulator_settings.tick_all_buttons()
         toolbar_window.tick_all_buttons()
+        main_window.tick_toggle(0)
 
 def debug():
     # Initialize the system bus

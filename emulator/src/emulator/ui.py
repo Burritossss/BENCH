@@ -17,7 +17,7 @@ class Window:
         # Dynamics are dynamic items that are easy to update
         self.dynamics:dict[int,tuple[Any, int, int]] = {} # Format: <id>:(<value>, <x>, <y>)
         self.buttons:dict[int,tuple[str, int, int, FunctionType|None]] = {} # Format: <id>:(<text>, <x>, <y>, <function>)
-        self.toggles:dict[int,tuple[str, int, int, Any, bool]] = {} # Format: <id>:(<text>, <x>, <y>, <function>, <state>)
+        self.toggles:dict[int,tuple[str, int, int, bool]] = {} # Format: <id>:(<text>, <x>, <y>, <state>)
         # Initialize the window
         self.window = curses.newwin(height, width, y, x)
         self.window.nodelay(True) # No delay mode on
@@ -28,11 +28,11 @@ class Window:
             self.window.addstr(1, ((self.window.getmaxyx()[1] - len(self.name)) // 2), self.name)
         self.window.refresh() # Refresh the window
 
-    def refresh(self):
+    def refresh(self) -> None:
         '''Manually refresh the window'''
         self.window.refresh()
 
-    def add_dynamic(self, x:int, y:int, id:int, value:Any):
+    def add_dynamic(self, x:int, y:int, id:int, value:Any) -> None:
         '''Creates a dynamic value object.'''
         if id in self.dynamics: # Check if the ID already exists
             # If so, throw an already exists error
@@ -41,17 +41,17 @@ class Window:
         self.window.addstr(y, x, str(value)) # Create a string on the window
         self.window.refresh() # Refresh the window
 
-    def update_dynamic(self, id:int, value:Any):
+    def update_dynamic(self, id:int, value:Any) -> None:
         '''Updates a dynamic's value based on it's ID'''
         if id not in self.dynamics: # Check if the ID does not exist
             # If so, throw a Key Error
-            raise KeyError(f'ID {id} does not exist!')
+            raise KeyError(f'ID, {id}, does not exist!')
         _, x, y = self.dynamics[id] # Unpack the tuple
         self.dynamics[id] = (value, x, y) # Reassemble the tuple
         self.window.addstr(y, x, str(value)) # Add the string to the window
         self.window.refresh()
 
-    def add_button(self, x:int, y:int, id:int, text:str, function:FunctionType|None):
+    def add_button(self, x:int, y:int, id:int, text:str, function:FunctionType|None) -> None:
         '''Creates a dynamic button object'''
         if id in self.buttons: # Check if the ID already exists
             # If so, throw an already exists error
@@ -60,7 +60,7 @@ class Window:
         self.window.addstr(y, x, text, curses.A_UNDERLINE) # Create a string on the window
         self.window.refresh() # Refresh the screen
 
-    def tick_all_buttons(self):
+    def tick_all_buttons(self) -> None:
         '''Ticks all buttons connected to this window'''
         if self.window.getch() == curses.KEY_MOUSE: # Check if the mouse pointer is being polled
             _, mouse_x, mouse_y, _, b_state = curses.getmouse() # Get the x, y, and state of the mouse
@@ -79,7 +79,27 @@ class Window:
                         self.window.addstr(y, x, text, curses.A_UNDERLINE) # Reset the text
                         self.window.refresh()
 
-    def add_toggle(self):
+    def add_toggle(self, x: int, y: int, id: int, text:str, state:bool=False) -> None:
         '''Creates a dynamic toggle object'''
         if id in self.toggles:
             raise AlreadyExistsError(f'Toggle with ID, {id}, already exists!')
+        self.toggles[id] = (text, x, y, state)
+        self.window.addstr(y, x, text, curses.A_REVERSE if state else curses.A_NORMAL)
+        self.window.refresh()
+    
+    def tick_toggle(self, id: int) -> bool:
+        '''Ticks a single toggle specified via an ID'''
+        if id not in self.toggles:
+            raise KeyError(f'ID, {id}, does not exist!')
+        if self.window.getch() == curses.KEY_MOUSE:
+            _, mouse_x, mouse_y, _, b_state = curses.getmouse()
+            window_y, window_x = self.window.getbegyx()
+            text, x, y, state = self.toggles[id]
+
+            if (mouse_y == y + window_y) and (x + window_x <= mouse_x <= x + window_x + len(text)):
+                if b_state & curses.BUTTON1_PRESSED:
+                    state = not state
+                    self.window.addstr(y, x, text, curses.A_REVERSE if state else curses.A_NORMAL)
+                    self.toggles[id] = (text, x, y, state)
+                    self.window.refresh()
+                    return state
