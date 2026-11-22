@@ -90,7 +90,8 @@ def main(stdscr:curses.window):
     emulator_settings_height = window_height // 2
     emulator_settings = Window(1, window_height - emulator_settings_height, emulator_settings_width, emulator_settings_height, 'Settings')
 
-    emulator_settings.add_button(3, 3, 0, 'Why', None)
+    #emulator_settings.add_button(3, 3, 0, 'Why', None)
+    emulator_settings.add_toggle(3, 3, 0, 'Start', "Stop", False)
 
     # Main Window
     main_window_width = window_width - (window_width // 6) - 1
@@ -104,7 +105,6 @@ def main(stdscr:curses.window):
 
     toolbar_window.add_button(1, 0, 0, 'Exit', sys.exit)
 
-    main_window.add_toggle(5, 4, 0, 'Toggle', False)
 
     while True:
         if emulation_running and loaded_rom:
@@ -112,7 +112,7 @@ def main(stdscr:curses.window):
 
         emulator_settings.tick_all_buttons()
         toolbar_window.tick_all_buttons()
-        main_window.tick_toggle(0)
+        emulator_settings.tick_toggle(0)
 
 def debug():
     # Initialize the system bus
