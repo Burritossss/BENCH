@@ -33,6 +33,28 @@ def debug():
         match inp: # Check what the user has input
             case "exit": # Check if exit has been typed
                 break
+            case "prog":
+                print("Programming:\n")
+                program.clear()
+                new_program:list[int] = []
+                while True:
+                    text_code = input()
+                    try:
+                        code = int(text_code)
+                        new_program.append(code)
+                    except:
+                        match text_code.lower():
+                            case "exit":
+                                program = new_program
+                                memory.write_program(program, (0x00, 0x20))
+                                cpu.reset()
+                                break
+                            case "list":
+                                for progcode in new_program:
+                                    print(progcode)
+                                print()
+                            case _:
+                                print("Invalid code")
             case _:
                 pass
 
