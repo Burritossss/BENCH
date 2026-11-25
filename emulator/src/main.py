@@ -28,16 +28,13 @@ def debug():
     while True:
         cpu.fetch_decode_execute() # Tick the cpu once
         print(f"A: 0x{cpu.a.value:02x}; X: 0x{cpu.x.value:02x}; Y: 0x{cpu.y.value:02x}; PC: 0x{cpu.pc.value:02x}")
-        inp = input()
-        match inp:
-            case "exit":
+        
+        inp = input().lower()
+        match inp: # Check what the user has input
+            case "exit": # Check if exit has been typed
                 break
             case _:
                 pass
-            
-        if inp.lower() == "exit": # Hold the program hostage until the user presses enter
-            break
-
 
 if __name__ == "__main__":
     debug()
