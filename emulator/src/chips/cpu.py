@@ -35,16 +35,29 @@ class CPU:
 
         # == Reset the program counter == 
         # Read the lower and upper address from the place in memory the PC start address should be
-        lower = int(self.bus.read_address(0xFFFE))
-        upper = int(self.bus.read_address(0xFFFF))
+        lower = int(self.fetch_from_bus(0xFFFE))
+        upper = int(self.fetch_from_bus(0xFFFF))
         address = lower | (upper << 8)
 
         # Set the PC to the start address
-        self.pc = UInt16(address)
+        self.pc = UInt16(address) 
+
+    def fetch_from_bus(self, address:UInt16|int) -> UInt8:
+        '''Fetches a value from bus and returns it'''
+        address_value = address.value if isinstance(address, UInt16) else address
+        value = self.bus.read_address(address_value)
+        return UInt8(value)
+
+    def write_to_bus(self, address:UInt16|int, value:UInt8|int) -> None:
+        '''Writes a value onto the bus'''
+        address_value = address.value if isinstance(address, UInt16) else address
+        value_value = value.value if isinstance(value, UInt8) else value
+
+        self.bus.write_address(address_value, value_value)
 
     def fetch_decode_execute(self):
         '''Fetch-Decode-Execute loop of the CPU'''
-        self.ir = UInt8(self.bus.read_address(self.pc)) # Read the byte at the address the PC is reading at
+        self.ir = UInt8(self.fetch_from_bus(self.pc)) # Read the byte at the address the PC is reading at
         self.pc += 1
         # Get the instruction's function from the instruction table
         instruction = INSTRUCTION_TABLE.get(self.ir.value)

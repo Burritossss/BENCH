@@ -35,9 +35,9 @@ class UInt8(int):
         return UInt8(self._value << value)
 
     def __or__(self, other:int|UInt8) -> UInt8:
-        # Grab the value of the other depending on what it is... yk the stuff...
+        # Grab the value of the other depending on what type it is
         value = other.value if isinstance(other, UInt8) else other
-        return UInt8(self._value | value)
+        return UInt8(self._value | value) # and then or it with the value of type
 
 
 class UInt16:

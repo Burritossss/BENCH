@@ -1,0 +1,37 @@
+# TITLE <insert title here>
+# AUTHOR <insert author here>
+# VERSION <insert version here>
+# DESCRIPT <insert short description here>
+-- Comment
+
+-- BENCH Plugin Language (BPL) is the supported language BENCH plugins are written in.
+-- BENCH gives hooks for one functions.
+-- The functions are:
+-- LOADED: Ran once the plugin is loaded
+
+-- BPL has a couple of types. Some which may be familiar.
+-- These types are:
+-- byte: A standard, 8-bit, byte.
+-- bytes: A list of bytes.
+-- byterange: A range of bytes. It is inclusive so <start>..=<end>.
+-- address: A 16 bit value used to identify a place on the bus.
+
+-- BENCH provides a couple of functions.
+-- These functions are:
+-- register_get(<register>): Gets a register.
+-- bus_get(<address>): Returns a single byte from the bus.
+
+-- BPL has some built in functions.
+-- These functions are:
+-- bytestoaddress(<lower_byte>, <upper_byte>): Returns an address made from two bytes. Little endian format.
+
+
+-- Built in event hook
+plugin LOADED
+{
+    -- variable definitions
+    -- var <type> <name> = <value>
+    var byte a = 0x01 -- Set the A variable as type byte and set it to 0x01
+    var bytes b = 0x01, 0x02, 0x04 -- Set the variable B as bytes and give it the values of 0x01, 0x02, and 0x04
+    var byterange c = 0x01, 0x05 -- Set the variable C as a byterange and give it a range of 0x01 to 0x05
+}
