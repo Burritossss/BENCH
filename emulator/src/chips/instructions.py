@@ -35,6 +35,18 @@ def stxa(cpu:CPU): # Store X absolute (Stores X register at an address defined b
     address = Memory.pull_address(cpu)
     cpu.write_to_bus(address, cpu.a)
 
+def ldyi(cpu:CPU): # Load Y immediate (Loads Y register with the next value in memory)
+    cpu.y = UInt8(cpu.fetch_from_bus(cpu.pc)) # Sets the Y register immediately
+    Registers.increment_pc(cpu) # Increment the PC
+
+def ldya(cpu:CPU): # Load Y absolute (Loads the Y register with a value in an address defined by two bytes in memory)
+    address = Memory.pull_address(cpu)
+    cpu.y = UInt8(cpu.fetch_from_bus(address))
+
+def stya(cpu:CPU): # Store Y absolute (Stores Y register at an address defined by two bytes in memory)
+    address = Memory.pull_address(cpu)
+    cpu.write_to_bus(address, cpu.y)
+
 
 '''
 A dictionary of each instructions function and it's operand
