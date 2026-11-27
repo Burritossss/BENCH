@@ -21,7 +21,8 @@ class CPU:
         self.x: UInt8   # General purpose register X
         self.y: UInt8   # General purpose register Y
         self.ir: UInt8  # Instruction register
-        self.pc: UInt16 # Program Counter Register
+        self.pc: UInt16 # Program Counter register
+        self.stack: UInt8 # Stack counter register
         self.reset() # Reset's the CPU
 
     def reset(self):
@@ -31,6 +32,7 @@ class CPU:
         self.x: UInt8 = UInt8(0)    # General purpose register X
         self.y: UInt8 = UInt8(0)    # General purpose register Y
         self.ir: UInt8 = UInt8(0)   # Instruction register
+        self.stack: UInt8 = UInt8(0) # Stack counter register
         self.pc: UInt16 = UInt16(0) # Program Counter Register
 
         # == Reset the program counter == 
