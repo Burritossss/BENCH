@@ -69,6 +69,20 @@ def dey(cpu:CPU): # Decrement Y (Decrements the Y register by one)
     cpu.y -= 1
     Registers.increment_pc(cpu)
 
+# === Memory Manipulation ===
+
+def inc_a(cpu:CPU): # Increment Absolute (Increments a value at an address defined by two bytes in memory)
+    address = Memory.pull_address(cpu) # Pull the address
+    value = cpu.fetch_from_bus(address) # Fetch the value based on the address
+    value += 1 # Increment the value
+    cpu.write_to_bus(address, value) # Write back the value
+
+def dec_a(cpu:CPU): # Decrement Absolute (Decrements a value at an address defined by two bytes in memory)
+    address = Memory.pull_address(cpu) # Pull the address
+    value = cpu.fetch_from_bus(address) # Fetch the value based on the address
+    value -= 1 # Decrement the value
+    cpu.write_to_bus(address, value) # Write back the value
+
 '''
 A dictionary of each instructions function and it's operand
 
@@ -79,4 +93,5 @@ INSTRUCTION_TABLE:dict[int,FunctionType] = {
     0x01:lda_i, 0x02:lda_a, 0x03:sta_a,                     # A register manipulation instructions
     0x11:ldx_i, 0x12:ldx_a, 0x13:stx_a, 0x14:inx, 0x15:dex, # X register manipulation instructions
     0x21:ldy_i, 0x22:ldy_a, 0x23:sty_a, 0x24:iny, 0x25:dey, # Y register manipulation instructions
+    0x31:inc_a, 0x32:dec_a, # Memory manipulation instructions
 }
