@@ -43,6 +43,10 @@ def inx(cpu:CPU): # Increment X (Increments the X register by one)
     cpu.x += 1
     Registers.increment_pc(cpu)
 
+def dex(cpu:CPU): # Decrement X (Decrements the X register by one)
+    cpu.x -= 1
+    Registers.increment_pc(cpu)
+
 # === Y register instructions ===
 
 def ldy_i(cpu:CPU): # Load Y immediate (Loads Y register with the next value in memory)
@@ -61,6 +65,9 @@ def iny(cpu:CPU): # Increment Y (Increments the Y register by one)
     cpu.y += 1
     Registers.increment_pc(cpu)
 
+def dey(cpu:CPU): # Decrement Y (Decrements the Y register by one)
+    cpu.y -= 1
+    Registers.increment_pc(cpu)
 
 '''
 A dictionary of each instructions function and it's operand
@@ -69,7 +76,7 @@ The format is <opcode>:<function without parenthesis>
 '''
 INSTRUCTION_TABLE:dict[int,FunctionType] = {
     0x00:nop,
-    0x01:lda_i, 0x02:lda_a, 0x03:sta_a,             # A register manipulation instructions
-    0x11:ldx_i, 0x12:ldx_a, 0x13:stx_a, 0x14:inx,   # X register manipulation instructions
-    0x21:ldy_i, 0x22:ldy_a, 0x23:sty_a, 0x24:iny,   # Y register manipulation instructions
+    0x01:lda_i, 0x02:lda_a, 0x03:sta_a,                     # A register manipulation instructions
+    0x11:ldx_i, 0x12:ldx_a, 0x13:stx_a, 0x14:inx, 0x15:dex, # X register manipulation instructions
+    0x21:ldy_i, 0x22:ldy_a, 0x23:sty_a, 0x24:iny, 0x25:dey, # Y register manipulation instructions
 }
