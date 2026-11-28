@@ -29,6 +29,20 @@ class UInt8(int):
         self._value = (self.value + value) & 0xFF # Add the value of other to the value and keep it within 0xFF
         return self
 
+    def __sub__(self, other:int|UInt8) -> UInt8:
+        # Grab the value of other depending on what type it is
+        value = other.value if isinstance(other, UInt8) else other
+        return UInt8(self._value - value)
+
+    def __rsub__(self, other:int|UInt8) -> UInt8:
+        return self.__sub__(other) # Return the addition
+
+    def __isub__(self, other:int|UInt8) -> UInt8:
+        # Grab the value of other depending on what type it is
+        value = other.value if isinstance(other, UInt8) else other
+        self._value = (self.value - value) & 0xFF # Subtract the value of other to the value and keep it within 0xFF
+        return self
+
     def __lshift__(self, other:int|UInt8) -> UInt8:
         # Grab the value of other depending on what it is
         value = other.value if isinstance(other, UInt8) else other
@@ -66,4 +80,18 @@ class UInt16:
         # Grab the value of other depending on what type it is
         value = other.value if isinstance(other, UInt16|UInt8) else other
         self._value = (self.value + value) & 0xFFFF # Add the value of other to the value and keep it within 0xFFFF
+        return self
+    
+    def __sub__(self, other:int|UInt8|UInt16) -> UInt16:
+        # Grab the value of other depending on what type it is
+        value = other.value if isinstance(other, UInt16|UInt8) else other
+        return UInt16(self._value - value)
+
+    def __rsub__(self, other:int|UInt8|UInt16) -> UInt16:
+        return self.__sub__(other) # Return the addition
+
+    def __isub__(self, other:int|UInt8|UInt16) -> UInt16:
+        # Grab the value of other depending on what type it is
+        value = other.value if isinstance(other, UInt16|UInt8) else other
+        self._value = (self.value - value) & 0xFFFF # Subtract the value of other to the value and keep it within 0xFFFF
         return self
