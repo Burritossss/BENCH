@@ -8,8 +8,14 @@ from .library.datatypes import * # Import dataclasses
 if TYPE_CHECKING: # Check if importing types to prevent looped importing errors
     from cpu import CPU # Import types for the CPU for access to its types
 
-def nop(cpu:CPU): # No Operation. Just passes
+# === Program Execution instructions ===
+
+def nop(cpu:CPU): # No Operation (Does nothing)
     pass
+
+def jmp_a(cpu:CPU): # Jump Absolute (Jumps to the address defined by two bytes in memory)
+    address = Memory.pull_address(cpu)
+    cpu.pc = UInt16(address.value - 1)
 
 # === A register instructions ===
 
@@ -89,7 +95,7 @@ A dictionary of each instructions function and it's operand
 The format is <opcode>:<function without parenthesis>
 '''
 INSTRUCTION_TABLE:dict[int,FunctionType] = {
-    0x00:nop,
+    0x00:nop, 0x01:jmp_a, # Program Execution instructions 
     0x01:lda_i, 0x02:lda_a, 0x03:sta_a,                     # A register manipulation instructions
     0x11:ldx_i, 0x12:ldx_a, 0x13:stx_a, 0x14:inx, 0x15:dex, # X register manipulation instructions
     0x21:ldy_i, 0x22:ldy_a, 0x23:sty_a, 0x24:iny, 0x25:dey, # Y register manipulation instructions
