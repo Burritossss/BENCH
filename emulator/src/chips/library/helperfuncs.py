@@ -22,9 +22,9 @@ class Memory:
         
         Increments pc by two
         '''
-        lower = cpu.bus.read_address(cpu.pc)
+        lower = cpu.fetch_from_bus(cpu.pc)
         Registers.increment_pc(cpu)
-        upper = cpu.bus.read_address(cpu.pc)
+        upper = cpu.fetch_from_bus(cpu.pc)
         Registers.increment_pc(cpu)
 
         address = lower | (upper << 8)
